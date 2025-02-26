@@ -2,7 +2,7 @@
 
 ## Contributors
 
-- Jess Todd
+- [Jess Todd](https://github.com/Jessicacktodd)
 - [Oli Kelly](https://github.com/olikelly00)
 
 ## Overview
