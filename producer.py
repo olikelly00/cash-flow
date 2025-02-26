@@ -4,6 +4,8 @@ import random
 import json
 from time import sleep
 import uuid
+import logging
+
 
 kafka_producer_config = {
     "bootstrap.servers": "localhost:9092",
@@ -31,9 +33,8 @@ def produce_event(topic_name):
     created_topics = producer.list_topics().topics
 
     if topic_name not in created_topics:
-        raise Exception(
-            f"Error: Topic {topic_name} does not exist. Must be created first using this CLI command: bin/kafka-topics.sh --create --topic {topic_name} --bootstrap-server localhost:9092"
-        )
+            logging.error(f"Error: Topic {topic_name} does not exist. Must be created first using this CLI command: bin/kafka-topics.sh --create --topic {topic_name} --bootstrap-server localhost:9092")
+        
     while True:
 
         selected_account = accounts[random.randint(0, len(accounts)-1)]
@@ -54,13 +55,13 @@ def produce_event(topic_name):
         else:
             transaction_summary[f"Transactions for Customer ID {selected_account_id}"] = 1
 
-        json_message = json.dumps(
+        json_message = json.dumps(  
             {
                 "transaction_id": f"{selected_account_id}-{transaction_type}-{uuid.uuid1()}",
                 "account": selected_account["account_id"],
                 "transaction_type": transaction_type,
                 "amount": amount,
-                "new balance": selected_account["balance"],
+                "new_balance": selected_account["balance"],
                 'transaction_summary': transaction_summary 
             }
         )
@@ -71,8 +72,7 @@ def produce_event(topic_name):
             value=json_message.encode("utf-8"),
         )
 
-
-        print(json_message)
+        logging.info(f"New message sent! - {json_message}")
         producer.flush()
         sleep(1)
 

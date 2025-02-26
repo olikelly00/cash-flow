@@ -8,11 +8,6 @@
 ## Overview
 This project simulates a **bank account system** using **Kafka** for real-time transaction processing. It consists of:
 
-- A **producer** that generates and sends transaction events (debit/credit operations) to a Kafka topic.
-- Two **Kafka consumers**:
-  1. A **logging consumer** that listens to transactions and prints them to the terminal.
-  2. A **balance calculator consumer** that tracks account balances and transaction counts.
-
 This setup demonstrates event-driven data processing and real-time transaction tracking.
 
 ## Technical Features
@@ -24,6 +19,7 @@ This setup demonstrates event-driven data processing and real-time transaction t
 - **Kafka Consumers**:
   - `logging-consumer.py`: Logs received transaction messages.
   - `balance-calculator-consumer.py`: Processes transactions and computes the running balance for each account.
+  - Uses in-memory storage to track balances dynamically.
 
 - **JSON-based Data Format**:
   ```json
@@ -70,12 +66,14 @@ python balance-calculator-consumer.py
 
 Each consumer listens to transaction messages and processes them in real time.
 
+## Technical Challenges
+- **Ensuring Correct Order of Messages**: Kafka does not guarantee message order across partitions, so designing an effective consumer processing strategy was key.
+- **Handling Missing Transactions**: Implementing error handling to ensure that failed messages do not break the consumer logic.
+- **Maintaining State Efficiently**: Since balances need to be updated dynamically, designing a lightweight in-memory solution was necessary.
+
 ## Key Learnings
 - **Kafka Basics**: How to set up a producer and consumers.
 - **Event-Driven Processing**: Handling real-time transactions efficiently.
 - **State Management**: Keeping track of balances and transaction counts.
 - **Error Handling**: Managing missing keys and ensuring robust message processing.
-
----
-
-
+- **Scalability Considerations**: How Kafka consumers can be scaled to handle high-throughput transaction processing.
