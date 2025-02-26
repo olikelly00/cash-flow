@@ -36,6 +36,7 @@ This setup demonstrates event-driven data processing and real-time transaction t
   ```
 
 ## How to Run the Project
+
 ### **1. Start Kafka Locally**
 Ensure you have Kafka running:
 ```bash
